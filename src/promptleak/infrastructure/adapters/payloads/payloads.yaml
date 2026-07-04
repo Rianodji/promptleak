@@ -1,0 +1,35 @@
+patterns:
+  - technique: impersonated_system_instruction
+    severity: high
+    regex: "(?i)ignore (all |any )?(previous|prior|above) instructions"
+    explanation: >
+      Le texte contient une instruction visant à faire ignorer les consignes
+      précédentes de l'agent — technique classique de tool poisoning.
+
+  - technique: exfiltration_request
+    severity: critical
+    regex: "(?i)(send|forward|cc|bcc)[^.]{0,40}(to|à)\\s+[\\w.+-]+@[\\w.-]+"
+    explanation: >
+      Le texte demande d'envoyer une copie de données vers une adresse tierce
+      avant ou après l'exécution de l'outil — tentative d'exfiltration.
+
+  - technique: hidden_role_tag
+    severity: high
+    regex: "(?i)<\\s*(system|assistant)\\s*>"
+    explanation: >
+      Le texte imite une balise de rôle système/assistant pour se faire passer
+      pour une instruction de confiance plutôt qu'une simple métadonnée d'outil.
+
+  - technique: fake_urgency_directive
+    severity: medium
+    regex: "(?i)\\b(important|mandatory|you must|critical)\\b[^.]{0,60}\\b(always|never|before)\\b"
+    explanation: >
+      Le texte utilise un ton impératif inhabituel dans une description
+      d'outil, typique des tentatives de manipulation d'agent.
+
+  - technique: suspicious_encoded_blob
+    severity: low
+    regex: "[A-Za-z0-9+/]{40,}={0,2}"
+    explanation: >
+      Le texte contient un bloc encodé (probablement base64) qui peut cacher
+      des instructions non visibles à la lecture directe.

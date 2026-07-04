@@ -1,0 +1,49 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "promptleak"
+version = "0.1.0"
+description = "Scanner d'injection de prompt pour serveurs MCP (statique + dynamique)"
+readme = "README.md"
+requires-python = ">=3.11"
+license = { file = "LICENSE" }
+dependencies = [
+    "mcp>=1.0.0",
+    "anthropic>=0.40.0",
+    "rich>=13.0.0",
+    "click>=8.1.0",
+    "pyyaml>=6.0",
+    "python-dotenv>=1.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0.0",
+    "pytest-asyncio>=0.24.0",
+    "ruff>=0.6.0",
+    "mypy>=1.10.0",
+]
+
+[project.scripts]
+promptleak = "promptleak.interface.cli.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/promptleak"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"
+
+[tool.ruff]
+line-length = 100
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+
+[tool.mypy]
+python_version = "3.11"
+packages = ["promptleak"]
+ignore_missing_imports = true
