@@ -2,7 +2,19 @@
 
 La v1 (voir [SCOPE.md](SCOPE.md)) est fonctionnelle de bout en bout. Ce
 fichier liste les pistes identifiées pour la suite, à reprendre au fil du
-temps — aucune urgence, aucun ordre imposé.
+temps — aucune urgence, aucun ordre imposé, à une exception près (voir
+priorité ci-dessous).
+
+## Priorité identifiée : détection du rug pull
+
+Voir [le contexte détaillé dans le README](README.md#contexte--pourquoi-cet-outil) :
+dans l'écosystème MCP réel, l'installation via des commandes comme
+`npx -y @editeur/serveur` récupère toujours la dernière version — un serveur
+validé à l'installation peut être remplacé silencieusement par une version
+piégée (cas réel : le rug pull `postmark-mcp` en septembre 2025). C'est le
+scénario le plus réaliste que promptleak ne couvre pas encore : garder un
+historique des descriptions/schémas d'un serveur déjà scanné et alerter s'ils
+changent entre deux scans.
 
 ## Détection statique
 
@@ -13,8 +25,6 @@ temps — aucune urgence, aucun ordre imposé.
   juger le texte par un LLM) pour réduire les faux positifs/négatifs des
   patterns actuels — voir les limites listées dans
   [docs/PAYLOADS.md](docs/PAYLOADS.md).
-- Détection du **rug pull** : garder un historique des descriptions d'un
-  serveur MCP déjà scanné et alerter si elles changent entre deux scans.
 
 ## Détection dynamique
 

@@ -10,6 +10,43 @@ pour la conception (hexagonale/DDD), [docs/PAYLOADS.md](docs/PAYLOADS.md)
 pour la bibliothèque de techniques d'injection détectées, et
 [ROADMAP.md](ROADMAP.md) pour les pistes d'amélioration futures.
 
+## Contexte : pourquoi cet outil
+
+Dans l'écosystème MCP réel, la grande majorité des serveurs ne sont **pas**
+développés en interne : ils sont installés depuis des registres publics
+(mcp.so référence plus de 20 000 serveurs, plus smithery.ai, glama.ai, le
+registre officiel `registry.modelcontextprotocol.io`) via une simple commande
+du type `npx -y @editeur/serveur`. C'est exactement le modèle que capture
+`McpTargetConfig` (`command` + `args` + `env`) dans ce projet.
+
+Deux mécaniques combinées créent le risque :
+
+1. **`npx -y` récupère toujours la dernière version** — une organisation qui a
+   validé une version d'un serveur se retrouve exposée dès la publication
+   d'une version suivante compromise, sans re-validation.
+2. **Les serveurs MCP tournent avec des credentials pré-autorisés** (clé API,
+   accès base de données...) au nom de l'agent — bien plus de privilège
+   qu'une dépendance logicielle classique qui ne fait "que" du calcul.
+
+Cas réel qui illustre exactement ça : le serveur `postmark-mcp` (envoi
+d'email), légitime et largement utilisé, a reçu en septembre 2025 une mise à
+jour malveillante ajoutant un BCC caché vers une adresse contrôlée par
+l'attaquant sur **chaque email envoyé** — environ 300 organisations touchées
+avant la découverte
+([Securelist](https://securelist.com/model-context-protocol-for-ai-integration-abused-in-supply-chain-attacks/117473/)).
+C'est un rug pull au sens strict : rien dans la description de l'outil au
+moment de l'installation ne laissait présager le piège ajouté plus tard. La
+technique de *tool poisoning* elle-même a été formalisée par Invariant Labs
+en avril 2025, la même année qu'une démonstration de rug pull sur le serveur
+MCP WhatsApp.
+
+**Conséquence pour promptleak** : sa valeur n'est pas de scanner un serveur
+une seule fois à l'installation, mais de pouvoir le **rescanner à chaque mise
+à jour** — puisque `npx -y` remplace silencieusement la version utilisée. Ce
+constat confirme que le scénario "rug pull" du [ROADMAP.md](ROADMAP.md) est la
+priorité la plus réaliste pour la suite du projet, pas une hypothèse
+théorique.
+
 ## ⚠️ Avertissement
 
 À utiliser **uniquement** sur des serveurs MCP dont vous êtes propriétaire ou
