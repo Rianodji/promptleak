@@ -6,8 +6,9 @@ détecte le *tool poisoning* statique (descriptions d'outils) et dynamique
 score de risque agrégé.
 
 Voir [SCOPE.md](SCOPE.md) pour le périmètre v1, [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)
-pour la conception (hexagonale/DDD), et [docs/PAYLOADS.md](docs/PAYLOADS.md)
-pour la bibliothèque de techniques d'injection détectées.
+pour la conception (hexagonale/DDD), [docs/PAYLOADS.md](docs/PAYLOADS.md)
+pour la bibliothèque de techniques d'injection détectées, et
+[ROADMAP.md](ROADMAP.md) pour les pistes d'amélioration futures.
 
 ## ⚠️ Avertissement
 
